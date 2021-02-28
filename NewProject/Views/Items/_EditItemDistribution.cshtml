@@ -1,0 +1,67 @@
+﻿@*@model NewProject.Models.Item*@
+@model dynamic
+@{
+    Layout = null;
+}
+
+
+<div class="modal-body">
+
+    <form id="itemDistributionUpdateForm">
+
+        <input type="hidden" name="id" id="updateItemDistributionId" value="@Model.ItemDistribution.id">
+
+        <div class="row justify-content-around">
+
+            <div class="col-md-12">
+
+                <div class="row justify-content-around pb-4">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="updateItemDistributionItem">Item</label>
+                            <input type="text" class="form-control" name="item_id" value="@Model.ItemDistribution.item.name" disabled readonly>
+                             
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="updateItemDistributionEmployee">Employee</label>
+                            <select class="form-control" id="updateItemDistributionEmployee" aria-describedby="updateItemDistributionEmployeeHelp" name="employee_id">
+                                <option value="">Employee</option>
+                                @foreach (var employee in Model.Employees)
+                                {
+                                    if (employee.id == Model.ItemDistribution.employee_id)
+                                    {
+                                        <option value="@employee.id" selected>@employee.name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@employee.id">@employee.name</option>
+                                    }
+
+                                }
+                            </select>
+                            <small id="updateItemDistributionEmployeeHelp" class="form-text text-muted"> </small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="updateItemDistributionStartDate">From</label>
+                            <input type="date" class="form-control" id="updateItemDistributionStartDate" aria-describedby="updateItemDistributionStartDateHelp" name="start_date" value="@( Model.ItemDistribution.start_date == null ?  "" : Convert.ToDateTime(Model.ItemDistribution.start_date).ToString("yyyy-MM-dd"))">
+                            <small id="updateItemDistributionStartDateHelp" class="form-text text-muted"> </small>
+                        </div>
+                    </div>
+
+                </div>
+
+                </div>
+
+
+        </div>
+
+    </form>
+
+</div>
+

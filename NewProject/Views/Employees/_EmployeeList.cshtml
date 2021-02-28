@@ -1,0 +1,61 @@
+﻿@model IEnumerable<NewProject.Models.Employee>
+@{
+    Layout = null;
+}
+<div class="row justify-content-start pb-4">
+    <div class="col-md-12">
+        <table id="employeeListTable" class="table table-responsive-md table-hover">
+            
+            <thead class="thead-dark">
+                <tr>
+                    <th class="pl-2">#ID</th>
+                    <th class="pl-2">Photo</th>
+                    <th class="pl-2">Name</th>
+                    <th class="pl-2">Email</th>
+                    <th class="pl-2">Phone</th>
+                    <th class="text-right">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{ int i = 0;}
+                @foreach (var item in Model)
+                {
+                    i++;
+                    <tr>
+                        <td>@i</td>
+
+                        @if (item.pic == null)
+                        {
+                            <td><img src="/Content/Logo/Employee.jpg" class="img-thumbnail datatable-employee-photo" alt="Cinque Terre" /></td>
+                        }
+                        else
+                        {
+                            <td><img src="/Content/Employees/@item.pic" class="img-thumbnail datatable-employee-photo" alt="Cinque Terre" /></td>
+                        }
+
+                        <td>@item.name</td>
+                        <td>@item.email</td>
+                        <td>@item.phone</td>
+                        <td>
+                            <div class="table-data-feature">
+                                <button class="item" title="Edit" onclick="GetEmployee('@item.id')" data-toggle="modal" data-target="#EditModal"><i class="zmdi zmdi-edit"></i></button>
+                                <button class="item" title="Delete" onclick="SelectEmployeeID('@item.id')" data-toggle="modal" data-target="#DeleteModal"> <i class="zmdi zmdi-delete"></i> </button>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<script src="~/Scripts/DataTableJQ.js"></script>
+<script>
+    $('#employeeListTable').DataTable({
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+    });
+</script>

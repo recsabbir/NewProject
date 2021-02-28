@@ -1,0 +1,281 @@
+﻿@{ ViewBag.Title = "EM | Create Employee"; }
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-header">Create Employee</div>
+            <div class="card-body">
+                <form id="employeeCreateForm">
+
+                    <input type="hidden" name="id" id="createEmployeeId" value="0">
+
+                    <div class="row justify-content-around">
+
+                        <div class="col-md-9">
+
+                            <div class="form-row justify-content-around pb-4">
+
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="createEmployeeName">Name</label>
+                                        <input type="text" class="form-control" id="createEmployeeName" aria-describedby="nameHelp" name="name" placeholder="Enter Name" required>
+                                        <small id="nameHelp" class="form-text text-muted"> </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 pl-4">
+                                    <div class="form-group">
+                                        <label for="createEmployeeBgroup">Blood Group</label>
+                                        <select class="form-control" id="createEmployeeBgroup" aria-describedby="bgroupHelp" name="bgroup">
+                                            <option value="" selected>Blood Group</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                        <small id="bgroupHelp" class="form-text text-muted"> </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 pl-4">
+                                    <div class="form-group">
+                                        <label for="createEmployeeDob">Date Of Birth</label>
+                                        <input type="date" class="form-control" id="createEmployeeDob" aria-describedby="dobHelp" name="dob" value="">
+                                        <small id="dobHelp" class="form-text text-muted"> </small>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-row justify-content-start pb-4">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="createEmployeeNID">NID Number</label>
+                                        <input type="text" class="form-control" id="createEmployeeNID" aria-describedby="nidHelp" name="nid" placeholder="Enter NID Number">
+                                        <small id="nidHelp" class="form-text text-muted"> </small>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-5 pl-4">
+                                    <div class="form-group">
+                                        <label for="createEmployeePhone">Phone Number</label>
+                                        <input type="text" class="form-control" id="createEmployeePhone" aria-describedby="phoneHelp" name="phone" placeholder="Enter Phone Number">
+                                        <small id="phoneHelp" class="form-text text-muted"> </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row justify-content-start pb-4">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="createEmployeeEmail">Email Address</label>
+                                        <input type="text" class="form-control" id="createEmployeeEmail" aria-describedby="emailHelp" name="email" placeholder="Enter Email Address" required>
+                                        <small id="emailHelp" class="form-text text-muted"> </small>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-5 pl-4">
+                                    <div class="form-group">
+                                        <label for="createEmployeeAddress">Present Address</label>
+                                        <input type="text" class="form-control" id="createEmployeeAddress" aria-describedby="addressHelp" name="address" placeholder="Enter Present Address">
+                                        <small id="addressHelp" class="form-text text-muted"> </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <div class="row justify-content-end">
+
+                                <div class="col-md-9">
+                                    <div id="createEmployeeImage">
+                                        <img src="/Content/Logo/Employee.jpg" id="createEmployeeImageThumbnai" class="img-rounded employee-photo" alt="Cinque Terre">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-end">
+                                <div class="col-md-9">
+                                    <div class="custom-file image-uploader">
+                                        <input type="file" class="custom-file-input" id="customFile" name="ImageFile">
+                                        <label class="custom-file-label" for="customFile">Change</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+                <div class="form-row justify-content-around">
+
+                    <div class="col-md-2">
+                        <input type="button" class="btn btn-primary" id="buttonCreateEmployee" value="CREATE">
+                    </div>
+                    <div class="col-md-10">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            //Activating SideNav
+            $("#sideNavEmployee").addClass("active");
+            $("#sideNavEmployeeCreate").addClass("active");
+
+            $("#customFile").on("change", function () {
+                
+                var fileName = $(this).val().split("\\").pop().slice(0, 12);
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+
+            });
+
+            $("#buttonCreateEmployee").click(function () {
+                SaveEmployee();
+            });
+
+        });
+
+
+        function SaveEmployee() {
+            var id = $("#createEmployeeId").val();
+
+            if (ValidateEmployee()) {
+                if (id == "0") {
+                    CreateEmployee();
+                }
+            }
+        }
+
+
+        function CreateEmployee() {
+            var data = $('#employeeCreateForm').serializeArray();
+            var obj = {};
+
+            $.map(data, function (n, i) {
+                obj[n['name']] = n['value'];
+            });
+
+            console.log("BOJ Serialized :", obj);
+            var formData = new FormData();
+
+            for (var prop in obj) {
+                console.log("property", prop);
+                console.log("value", obj[prop]);
+                if (!obj.hasOwnProperty(prop)) continue;
+                formData.append(prop, obj[prop]);
+            }
+            formData.append("ImageFile", document.getElementById('customFile').files[0]);
+
+            $.ajax({
+                url: "/Employees/CreateEmployee",
+                type: 'POST',
+                method: 'POST',
+                contentType: false,
+                processData: false,
+                //dataType: "json",
+                data: formData,
+                success: function (_data) {
+                    location.replace("/Employees")
+                    //console.log("Employee Created");
+                    //location.reload(true);
+                }
+                //,
+                //error: function (res) {
+                //    console.log(res);
+                //    location.reload(true);
+                //}
+            });
+        }
+
+
+        function ValidateEmployee() {
+            if (!ValidateName()) {
+                //console.log("Within ValidateEmployee : Name Not Validated");
+                $('#nameHelp').html("Inappropiate Name.");
+                $('#nameHelp').removeClass("text-muted");
+                $('#nameHelp').addClass("text-danger");
+
+            } else {
+                $('#nameHelp').html(" ");
+
+            }
+            if (!ValidateEmail()) {
+                //console.log("Within ValidateEmployee : Email Not Validated");
+                $('#emailHelp').html("Inappropiate Email.");
+                $('#emailHelp').removeClass("text-muted");
+                $('#emailHelp').addClass("text-danger");
+            } else {
+                $('#emailHelp').html(" ");
+            }
+
+            if (ValidateName() && ValidateEmail()) {
+                //console.log("VALIDATED");
+                return true;
+            } else {
+                //console.log("NOT VALIDATED");
+                return false;
+            }
+
+        }
+
+        function ValidateName() {
+            var _name = $('#createEmployeeName').val();
+            _name = _name.trim();
+
+            if (_name === "") {
+                return false;
+            } else {
+                return true;
+            }
+
+        }
+
+        function ValidateEmail() {
+            var _email = $('#createEmployeeEmail').val();
+            _email = _email.trim();
+
+            if (_email === null) {
+                return false;
+            } else {
+
+                var _emailArr = _email.split("@@");
+                if (_emailArr.length == 2) {
+
+                    //for (var i = 0; i < _emailArr[0].length; i++) {
+                    //    if()
+                    //}
+                    if ((_emailArr[1].length - _emailArr[1].lastIndexOf(".com")) == 4) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                } else {
+                    return false;
+                }
+
+
+                //return true;
+            }
+
+        }
+
+
+    </script>
+}
+

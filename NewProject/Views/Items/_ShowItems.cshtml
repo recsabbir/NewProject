@@ -1,0 +1,48 @@
+﻿@model IEnumerable<NewProject.Models.Item>
+@{
+    Layout = null;
+}
+
+<div class="row justify-content-start pb-4">
+    <div class="col-md-12">
+        <table id="tableItemList" class="table table-responsive-md table-hover table-salaryInformation">
+            <thead class="">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{int i = 0; }
+                @foreach (var item in Model)
+                {
+                    i++;
+
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.name</td>
+                        <td>@item.category.name</td>
+                        <td>@item.unit_price</td>
+                        <td>@if (! string.IsNullOrEmpty(item.employee_id.ToString())) { <span>Assigned</span> } else { <span>Not Assigned</span> }</td>
+                        <td><span class="table-data-feature"> <button class="item" title="Edit" onclick="GetItem('@item.id')" data-toggle="modal" data-target="#itemEditModal"><i class="zmdi zmdi-edit"></i></button> <button class="item" title="Delete" onclick="SelectItemID('@item.id')" data-toggle="modal" data-target="#DeleteItemModal"> <i class="zmdi zmdi-delete"></i> </button></span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/Scripts/DataTableJQ.js"></script>
+<script>
+    $('#tableItemList').DataTable({
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+    });
+</script>
+
+

@@ -1,0 +1,25 @@
+﻿@{ ViewBag.Title = "EM | Home"; }
+
+<div class="row" id="Index-DashBoard">
+
+
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            //Activating SideNav
+            $("#sideNavHome").addClass("active");
+
+            GetDashBoard();
+            
+        });
+
+
+        function GetDashBoard() {
+            $("#Index-DashBoard").load("/Home/DashBoard/");
+        }
+
+    </script>
+}

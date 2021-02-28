@@ -1,0 +1,701 @@
+﻿@using System.Web;
+@using NewProject.Models;
+@{ User u = Session["User"] as User; }
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Title Page-->
+    <title>@ViewBag.Title</title>
+
+    <!-- Fontfaces CSS-->
+
+    <link href="~/Content/font-face.css" rel="stylesheet" media="all">
+    <link href="~/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="~/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="~/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="~/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href="~/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="~/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="~/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="~/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="~/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="~/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="~/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link rel="stylesheet" href="~/Content/datetimepicker.css" />
+    <link rel="stylesheet" href="~/Content/toastr.css" />
+    <link rel="stylesheet" href="~/Content/jquery-ui.css" />
+    <link href="~/Content/theme.css" rel="stylesheet" media="all">
+    <link href="~/Content/DataTableStyle.css" rel="stylesheet" media="all">
+    <script src="~/vendor/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/DataTableJQ.js"></script>
+    <link rel="stylesheet" href="~/Content/CustomStyle.css" />
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- HEADER MOBILE-->
+        <header class="header-mobile d-block d-lg-none">
+            <div class="header-mobile__bar">
+                <div class="container-fluid">
+                    <div class="header-mobile-inner">
+                        <a class="logo" href="~/Home">
+                            <img src="~/Content/Logo/logo.png" alt="CoolAdmin" />
+                        </a>
+                        <button class="hamburger hamburger--slider" type="button">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nav class="navbar-mobile">
+                <div class="container-fluid">
+                    <ul class="navbar-mobile__list list-unstyled">
+                        <li>
+                            <a href="~/Home">
+                                <i class="fas fa-tachometer-alt"></i>Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a class="js-arrow" href="~/Items">
+                                <i class="fas fa-star"></i>Items
+                            </a>
+                        </li>
+                        <li>
+                            <a class="js-arrow" href="~/Items/Category">
+                                <i class="fas fa-tags"></i>Item Category
+                            </a>
+                        </li>
+                        <li>
+                            <a class="js-arrow" href="~/Employees">
+                                <i class="fas fa-user"></i>Employees
+                            </a>
+                        </li>
+                        <li>
+                            <a class="js-arrow" href="~/Items/Distribution">
+                                <i class="fas fa-user"></i>Item Distribution
+                            </a>
+                        </li>
+                        @*<li>
+                              <a class="js-arrow" href="~/Employees/SalaryInfo">
+                                  <i class="fas fa-usd fa-1x"></i>Salary Informations
+                              </a>
+                            </li>*@
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- END HEADER MOBILE-->
+        <!-- MENU SIDEBAR-->
+        <aside class="menu-sidebar d-none d-lg-block">
+            <div class="logo">
+                <a href="~/Home">
+                    <img src="~/Content/Logo/logo.png" alt="Cool Admin" />
+                </a>
+            </div>
+            <div class="menu-sidebar__content js-scrollbar1">
+                <nav class="navbar-sidebar">
+                    <ul class="list-unstyled navbar__list">
+                        <li class="" id="sideNavHome">
+                            <a href="~/Home">
+                                <i class="fas fa-tachometer-alt"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="" id="sideNavItems">
+                            <a class="js-arrow" href="~/Items">
+                                <i class="fas fa-star"></i>Items
+                            </a>
+                        </li>
+                        <li class="" id="sideNavItemCategory">
+                            <a class="js-arrow" href="~/Items/Category">
+                                <i class="fas fa-tags"></i>Item Category
+                            </a>
+                        </li>
+                        <li class="" id="sideNavEmployee">
+                            <a class="js-arrow" href="~/Employees">
+                                <i class="fas fa-user"></i>Employees
+                            </a>
+                        </li>
+                        <li class="" id="sideNavItemDistribution">
+                            <a class="js-arrow" href="~/Items/Distribution">
+                                <i class="fas fa-truck"></i>Item Distribution
+                            </a>
+                        </li>
+                        @*<li id="sideNavSalaryInfo">
+                                <a class="js-arrow" href="~/Employees/SalaryInfo">
+                                    <i class="fas fa-usd fa-1x"></i>Salary Informations
+                                </a>
+                            </li>*@
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- END MENU SIDEBAR-->
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            <header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap">
+                            <form class="form-header">
+                                <input class="au-input au-input--xl" type="text" name="search" placeholder="I search nothing..." />
+                                <button class="au-btn--submit">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
+                            </form>
+                            <div class="header-button">
+
+                                <div class="account-wrap">
+                                    <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                            <img src="~/Content/Employees/@u.employee.pic" alt="@u.employee.name" />
+                                        </div>
+                                        <div class="content">
+                                            <a class="js-acc-btn" href="#">@u.employee.name</a>
+                                        </div>
+                                        <div class="account-dropdown js-dropdown">
+                                            <div class="account-dropdown__footer">
+                                                <a href="~/Login/Logout">
+                                                    <i class="zmdi zmdi-power"></i>Logout
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- HEADER DESKTOP-->
+            <!-- MAIN CONTENT-->
+            <div class="main-content">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        @RenderBody()
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="copyright mt-5 mb-0 p-0">
+                                    <p class="text-center mb-0">&copy; @DateTime.Now.Year - VivaSoft Application</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="requestedPV">
+                    <!---------Employee Create Modal------------>
+                    <div id="EmployeeCreateModal" class="modal fade" tabindex="1" role="dialog" aria-hidden="true"
+                         data-backdrop="static">
+
+                        <div class="modal-dialog modal-lg" role="document">
+
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="fas fa-user-plus fa-lg" aria-hidden="true"></i>&nbsp; Create Employee
+                                    </div>
+                                </div>
+                                <div class="modal-body" id="EmployeeCreateCardBody">
+
+
+
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button class="btn btn-primary" id="buttonUpdateSalaryInfo" onclick="SaveEmployeeCreate()">Create</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------Employee Create Modal Ends------------>
+                    <!---------Delete Modal------------>
+                    <div id="DeleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+                         data-backdrop="static">
+                        <input type="hidden" id="selectedDeleteId" value="0" />
+                        <div class="modal-dialog modal-confirm">
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="zmdi zmdi-delete zmdi-hc-2x"></i>&nbsp;Are you sure?
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Do you really want to delete this record? <br> This process cannot be undone.</p>
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-danger" id="buttonDeleteEmployee">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------Delete Modal Ends------------>
+                    <!---------Edit Modal------------>
+                    <div id="EditModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+                         data-backdrop="static">
+
+                        <div class="modal-dialog modal-lg" role="document">
+                            <input type="hidden" id="selectedEditId" value="0" />
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="zmdi zmdi-edit zmdi-hc-2x" aria-hidden="true"></i>&nbsp; Edit
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+
+                                    <form id="employeeUpdateForm">
+
+                                        <input type="hidden" name="id" id="updateEmployeeId" value="0">
+
+                                        <div class="row justify-content-around">
+
+                                            <div class="col-md-9">
+
+                                                <div class="form-row justify-content-around pb-4">
+
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="updateEmployeeName">Name</label>
+                                                            <input type="text" class="form-control" id="updateEmployeeName" aria-describedby="uNameHelp" name="name" placeholder="Enter Name" required>
+                                                            <small id="uNameHelp" class="form-text text-muted"> </small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 pl-1">
+                                                        <div class="form-group">
+                                                            <label for="updateEmployeeBgroup">Blood Group</label>
+                                                            <select class="form-control" id="updateEmployeeBgroup" aria-describedby="uBgroupHelp" name="bgroup">
+                                                                <option value="" selected>Blood Group</option>
+                                                                <option value="A+">A+</option>
+                                                                <option value="A-">A-</option>
+                                                                <option value="B+">B+</option>
+                                                                <option value="B-">B-</option>
+                                                                <option value="AB+">AB+</option>
+                                                                <option value="AB-">AB-</option>
+                                                                <option value="O+">O+</option>
+                                                                <option value="O-">O-</option>
+                                                            </select>
+                                                            <small id="uBgroupHelp" class="form-text text-muted"> </small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 pl-1">
+                                                        <div class="form-group">
+                                                            <label for="updateEmployeeDob">Date Of Birth</label>
+                                                            <input type="date" class="form-control" id="updateEmployeeDob" aria-describedby="uDobHelp" name="dob" value="">
+                                                            <small id="uDobHelp" class="form-text text-muted"> </small>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-row justify-content-start pb-4">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="updateEmployeeNID">NID Number</label>
+                                                            <input type="text" class="form-control" id="updateEmployeeNID" aria-describedby="uNidHelp" name="nid" placeholder="Enter NID Number">
+                                                            <small id="uNidHelp" class="form-text text-muted"> </small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3 pl-1">
+                                                        <div class="form-group">
+                                                            <label for="updateEmployeePhone">Phone Number</label>
+                                                            <input type="text" class="form-control" id="updateEmployeePhone" aria-describedby="uPhoneHelp" name="phone" placeholder="Enter Phone Number">
+                                                            <small id="uPhoneHelp" class="form-text text-muted"> </small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 pl-1">
+                                                        <div class="form-group">
+                                                            <label for="updateEmployeeJoiningDate">Joining Date</label>
+                                                            <input type="date" class="form-control" id="updateEmployeeJoiningDate" aria-describedby="uJoiningDateHelp" name="joining_date" value="">
+                                                            <small id="uJoiningDateHelp" class="form-text text-muted"> </small>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-row justify-content-start pb-4">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="updateEmployeeEmail">Email Address</label>
+                                                            <input type="text" class="form-control" id="updateEmployeeEmail" aria-describedby="uEmailHelp" name="email" placeholder="Enter Email Address" required>
+                                                            <small id="uEmailHelp" class="form-text text-muted"> </small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-5 pl-1">
+                                                        <div class="form-group">
+                                                            <label for="updateEmployeeAddress">Present Address</label>
+                                                            <input type="text" class="form-control" id="updateEmployeeAddress" aria-describedby="uAddressHelp" name="address" placeholder="Enter Present Address">
+                                                            <small id="uAddressHelp" class="form-text text-muted"> </small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-3">
+
+                                                <div class="row justify-content-end">
+
+                                                    <div class="col-md-9">
+                                                        <div id="updateEmployeeImage">
+                                                            <img src="/Content/Logo/Employee.jpg" id="updateEmployeeImageThumbnai" class="img-rounded employee-photo" alt="Cinque Terre">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row justify-content-end">
+                                                    <div class="col-md-9">
+                                                        <div class="custom-file image-uploader mt-4 ml-0 pl-0">
+                                                            <input type="file" class="custom-file-input" id="customFile" name="ImageFile">
+                                                            <label class="custom-file-label" for="customFile">Change</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <input type="button" class="btn btn-success ml-3" id="buttonUpdateEmployee" value="UPDATE">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------Edit Modal Ends------------>
+                    <!---------SalaryDetailByYear Modal------------>
+                    <div id="SalaryDetailByYear" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+                         data-backdrop="static">
+
+                        <div class="modal-dialog modal-lg" role="document">
+
+                            <div class="modal-content">
+                                @*<div class="modal-header flex-column">
+                                        <div>
+                                            <i class="zmdi zmdi-view-list zmdi-hc-2x" aria-hidden="true"></i>&nbsp; Salary Information
+                                        </div>
+                                    </div>*@
+                                <div class="modal-body" id="SalaryDetailByYearCard">
+
+
+
+                                </div>
+                                @*<div class="modal-footer justify-content-end">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <!---------SalaryDetailByYear Modal Ends------------>
+                    <!---------Salary Info Update Modal------------>
+                    <div id="SalaryInfoUpdate" class="modal fade" tabindex="1" role="dialog" aria-hidden="true"
+                         data-backdrop="static">
+
+                        <div class="modal-dialog modal-lg" role="document">
+
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="zmdi zmdi-view-list zmdi-hc-2x" aria-hidden="true"></i>&nbsp; Update Salary Information
+                                    </div>
+                                </div>
+                                <div class="modal-body" id="SalaryInfoUpdateCard">
+
+
+
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button class="btn btn-primary" id="buttonUpdateSalaryInfo" onclick="UpdateSalaryInfo()">Update</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------Salary Info Update Modal Ends------------>
+                    <!---------Add Item Category Modal------------>
+                    <div id="AddItemCategory" class="modal fade" tabindex="1" role="dialog" aria-hidden="true"
+                         data-backdrop="static">
+
+                        <div class="modal-dialog" role="document">
+
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="fas fa-plus" aria-hidden="true"></i>&nbsp; Add Item Category
+                                    </div>
+                                </div>
+                                <div class="modal-body" id="AddItemCategoryBody">
+
+
+
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button class="btn btn-primary" id="buttonAddItemCategory" onclick="AddItemCategory()">Add</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------Add Item Category Modal Ends------------>
+                    <!---------Delete Item Category Modal------------>
+                    <div id="DeleteItemCategoryModal" class="modal fade" tabindex="1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+                         data-backdrop="static">
+                        <input type="hidden" id="selectedCategoryDeleteId" value="0" />
+                        <div class="modal-dialog modal-confirm">
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="zmdi zmdi-delete zmdi-hc-2x"></i>&nbsp;Are you sure?
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Do you really want to delete this record? <br> This process cannot be undone.</p>
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-danger" id="buttonDeleteItemCategory">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------Delete Item Category Modal Ends------------>
+                    <!---------Item Category Edit Modal------------>
+                    <div id="itemCategoryEditModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+                         data-backdrop="static">
+
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="zmdi zmdi-edit zmdi-hc-2x" aria-hidden="true"></i>&nbsp; Edit
+                                    </div>
+                                </div>
+                                <div class="modal-body" id="itemCategoryEditModalBody">
+
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <input type="button" class="btn btn-success ml-3" id="buttonUpdateItemCategory" value="UPDATE">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!---------Item Category Edit Modal Ends------------>
+                    <!---------Add Item Modal------------>
+                    <div id="AddItem" class="modal fade" tabindex="1" role="dialog" aria-hidden="true"
+                         data-backdrop="static">
+
+                        <div class="modal-dialog modal-lg" role="document">
+
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="fas fa-plus" aria-hidden="true"></i>&nbsp; Add Item
+                                    </div>
+                                </div>
+                                <div class="modal-body" id="AddItemBody">
+
+
+
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button class="btn btn-primary" id="buttonAddItem" onclick="AddItem()">Add</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------Add Item Modal Ends------------>
+                    <!---------Delete Item Modal------------>
+                    <div id="DeleteItemModal" class="modal fade" tabindex="1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+                         data-backdrop="static">
+                        <input type="hidden" id="selectedItemDeleteId" value="0" />
+                        <div class="modal-dialog modal-confirm">
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="zmdi zmdi-delete zmdi-hc-2x"></i>&nbsp;Are you sure?
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Do you really want to delete this record? <br> This process cannot be undone.</p>
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-danger" id="buttonDeleteItem">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------Delete Item Modal Ends------------>
+                    <!---------Item Edit Modal------------>
+                    <div id="itemEditModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+                         data-backdrop="static">
+
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="zmdi zmdi-edit zmdi-hc-2x" aria-hidden="true"></i>&nbsp; Edit
+                                    </div>
+                                </div>
+                                <div class="modal-body" id="itemEditModalBody">
+
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <input type="button" class="btn btn-success ml-3" id="buttonUpdateItem" value="UPDATE">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!---------Item Edit Modal Ends------------>
+                    <!---------Add ItemDistribution Modal------------>
+                    <div id="AddItemDistribution" class="modal fade" tabindex="1" role="dialog" aria-hidden="true"
+                         data-backdrop="static">
+
+                        <div class="modal-dialog modal-lg" role="document">
+
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="fas fa-plus" aria-hidden="true"></i>&nbsp; Distribute Item
+                                    </div>
+                                </div>
+                                <div class="modal-body" id="AddItemDistributionBody">
+
+
+
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button class="btn btn-primary" id="buttonAddItemDistribution">Distribute</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------Add Item Modal Ends------------>
+                    <!---------Delete Item Distribution Modal------------>
+                    <div id="DeleteItemDistributionModal" class="modal fade" tabindex="1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+                         data-backdrop="static">
+                        <input type="hidden" id="selectedItemDistributionDeleteId" value="0" />
+                        <div class="modal-dialog modal-confirm">
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="zmdi zmdi-delete zmdi-hc-2x"></i>&nbsp;Are you sure?
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Do you really want to delete this record? <br> This process cannot be undone.</p>
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-danger" id="buttonDeleteItemDistribution">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------Delete Item Distribution Modal Ends------------>
+                    <!---------Item Distribution Edit Modal------------>
+                    <div id="itemDistributionEditModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+                         data-backdrop="static">
+
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div>
+                                        <i class="zmdi zmdi-edit zmdi-hc-2x" aria-hidden="true"></i>&nbsp; Edit
+                                    </div>
+                                </div>
+                                <div class="modal-body" id="itemDistributionEditModalBody">
+
+                                </div>
+                                <div class="modal-footer justify-content-end">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <input type="button" class="btn btn-success ml-3" id="buttonUpdateItemDistribution" value="UPDATE">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!---------Item Edit Modal Ends------------>
+
+
+
+
+                </div>
+
+
+            </div>
+            <!-- END MAIN CONTENT-->
+            <!-- END PAGE CONTAINER-->
+
+        </div>
+
+
+    </div>
+
+    <!-- Jquery JS-->
+    @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/vendor/jquery-3.2.1.min.js"></script>*@
+    <!-- Bootstrap JS-->
+    <script src="~/vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="~/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <!-- Vendor JS       -->
+    <script src="~/vendor/slick/slick.js"></script>
+    <script src="~/vendor/wow/wow.min.js"></script>
+    <script src="~/vendor/animsition/animsition.min.js"></script>
+    <script src="~/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="~/vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="~/vendor/counter-up/jquery.counterup.min.js"></script>
+    <script src="~/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="~/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="~/vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="~/vendor/select2/select2.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+
+    <!-- Main JS-->
+    <script src="~/Scripts/main.js"></script>
+
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
+
+</body>
+
+</html>
+<!-- end document-->

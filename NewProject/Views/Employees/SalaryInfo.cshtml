@@ -1,0 +1,383 @@
+﻿@{ ViewBag.Title = "EM | Salary Info"; }
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-header" id="salaryInfoViewHeading">
+                <div class="row justify-content-around">
+                    <div class="col "><h5>Salary Info</h5></div>
+
+                    <div class="col text-right"><button id="SalaryInfoUpdateShowButton"><i class="fas fa-plus-circle"></i> Update</button></div>
+                </div>
+            </div>
+
+            <div id="salaryInfoViewCardBody">
+                <div class="card-body" id="salaryInfoViewCardBodyDynamic">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            //Activating SideNav
+            $("#sideNavSalaryInfo").addClass("active");
+
+            //Loading Salary Information Table
+            ShowSalaryInfo();
+
+            //GetSalaryInfoUpdatePage();
+
+            //$("#salaryInfoHeadingButton").click(function () {
+            //    GetSalaryInfosEmployees();
+            //});
+
+            $("#SalaryInfoUpdateShowButton").click(function () {
+                GetSalaryInfoUpdatePage();
+                GetSalaryInfosEmployees();
+                $("#SalaryInfoUpdate").modal("show");
+                
+            });
+
+
+
+        });
+
+        //To Load Salary Information Table
+        function ShowSalaryInfo() {
+            
+            $.ajax({
+                url: '/Employees/ShowSalaryInfo',
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                success: function (_data) {
+
+                    $("#salaryInfoViewCardBodyDynamic").html(_data);
+                    //SelectSalaryInfo();
+                },
+                error: function (res) {
+                    console.log(res);
+                    console.log(res.responseText);
+                }
+            });
+        }
+
+        //To Load SalaryInformation Update Page in Modal
+        function GetSalaryInfoUpdatePage() {
+            $.ajax({
+                url: '/Employees/UpdateSalaryInfo',
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+
+                success: function (_data) {
+
+                    $("#SalaryInfoUpdateCard").html(_data);
+                    
+                },
+                error: function (res) {
+                    console.log(res);
+                    console.log(res.responseText);
+                }
+            });
+        }
+
+
+        function GetSalaryInfosEmployees() {
+            $.ajax({
+                url: '/Employees/GetSalaryInfoEmployees',
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                //data: "{}",
+                success: function (_data) {
+                    
+                    $("#salaryInfoEmployee").autocomplete({
+                        source: _data,
+
+                        change: function (event, ui) {
+                            
+                            $("#salaryInfoYear").val("");
+                            $("#salaryInfoYear").html("");
+                            $("#salaryInfoMonth").val("");
+                            $("#salaryInfoMonth").html("");
+                            $("#salaryInfoSalary").val("");
+                            SelectSalaryInfoYear();
+                            $("#salaryInfoEmployeeHelp").html("");
+                            $('#salaryInfoEmployeeHelp').removeClass("text-danger");
+                            $('#salaryInfoEmployeeHelp').addClass("text-muted");
+                        }
+                    });
+
+                },
+                error: function (res) {
+                    console.log(res);
+                    console.log(res.responseText);
+                }
+            });
+        }
+
+        function SelectSalaryInfoYear() {
+
+            //console.log("SalaryInfoEmployee Called");
+
+            _id = $("#salaryInfoEmployee").val().split(" : ")[0];
+            //Year Selection
+            $.ajax({
+                url: '/Employees/GetJoiningDate/' + _id,
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                //data: "{}",
+                success: function (_data) {
+                    //console.log(_data);
+
+                    var date = new Date(parseInt(_data.joining_date.substr(6)));
+
+                    var year_start = date.getFullYear();
+                    var year_end = (new Date).getFullYear(); //current year
+                    var selected_year = 3000; // 0 first option,,,,,,No option will be selected now
+
+                    var optionYear = '<option value="" selected >Year</option>';  //first option
+
+                    for (var i = 0; i <= (year_end - year_start); i++) {
+                        var year = (year_start + i);
+                        var selected = (year == selected_year) ? ' selected' : '';
+                        optionYear += '<option value="' + year + '" ' + selected + '>' + year + '</option>';
+                    }
+
+                    $("#salaryInfoYear").html(optionYear);
+                },
+                error: function (res) {
+                    console.log(res);
+                    console.log(res.responseText);
+                }
+            });
+
+
+        }
+
+        function SelectSalaryInfoMonth() {
+            $("#salaryInfoYearHelp").html("");
+            $('#salaryInfoYearHelp').removeClass("text-danger");
+            $('#salaryInfoYearHelp').addClass("text-muted");
+
+            //console.log("Year Changed");
+            $("#salaryInfoMonth").val("");
+            $("#salaryInfoMonth").html("");
+
+            //console.log("SalaryInfoEmployee Called");
+
+            _id = $("#salaryInfoEmployee").val().split(" : ")[0];
+            //Year Selection
+            $.ajax({
+                url: '/Employees/GetJoiningDate/' + _id,
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                //data: "{}",
+                success: function (_data) {
+                    //console.log(_data);
+
+                    var date = new Date(parseInt(_data.joining_date.substr(6)));
+
+                    var month_start = date.getMonth() + 1; //Employees joining month
+                    var month_end = (new Date).getMonth() + 1; //Current Month
+                    var selected_month = 13; //No month will be selected
+
+                    //Month Selection
+                    //console.log("Employee Joining Year : " + date.getFullYear());
+                    //console.log("Selected Year : " + $("#salaryInfoYear").val());
+                    if (date.getFullYear() == $("#salaryInfoYear").val()) {
+                        month_start = date.getMonth() + 1; //Employees joining month
+
+                    } else {
+                        month_start = 1;
+                    }
+
+                    if ($("#salaryInfoYear").val() == (new Date).getFullYear()) {
+                        month_end = (new Date).getMonth() + 1; //Current Month
+
+                    } else {
+                        month_end = 12;
+                    }
+
+
+
+                    var months = "M,JANUARY,FEBRUARY,MARCH,APRIL,MAY,JUNE,JULY,AUGUST,SEPTEMBER,OCTOBER,NOVEMBER,DECEMBER".split(',');
+
+                    var optionMonth = '<option value="" selected >Month</option>';  //first option
+
+                    for (var i = 0; i <= (month_end - month_start); i++) {
+                        var month = (month_start + i);
+                        var selected = (month == selected_month) ? ' selected' : '';
+                        optionMonth += '<option value="' + month + '" ' + selected + '>' + months[month] + '</option>';
+                    }
+
+
+                    $("#salaryInfoMonth").html(optionMonth);
+
+
+                },
+                error: function (res) {
+                    console.log(res);
+                    console.log(res.responseText);
+                }
+            });
+
+
+        }
+
+        function SelectSalaryInfoSalary() {
+            $("#salaryInfoMonthHelp").html("");
+            $('#salaryInfoMonthHelp').removeClass("text-danger");
+            $('#salaryInfoMonthHelp').addClass("text-muted");
+            
+            $("#salaryInfoSalary").val("");
+
+            _id = $("#salaryInfoEmployee").val().split(" : ")[0];
+            _year = $("#salaryInfoYear").val();
+            _month = $("#salaryInfoMonth").val();
+
+
+
+            var dataToSend = _id + ":" + _year + "-" + _month;
+
+            //Year Selection
+            $.ajax({
+                url: '/Employees/GetSalaryInfoSalary/',
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                data: {
+                    data: dataToSend
+                },
+                success: function (_data) {
+                    //console.log(_data);
+                    if (_data.salary == 0) {
+                        $("#salaryInfoSalary").val("");
+                    } else {
+                        $("#salaryInfoSalary").val(_data.salary);
+                    }
+
+
+
+                }
+                //error: function (res) {
+                //    console.log(res);
+                //    console.log(res.responseText);
+                //}
+            });
+
+
+        }
+
+        function UpdateSalaryInfo() {
+
+            _selectedEmployee = $("#salaryInfoEmployee").val();
+            _selectedYear = $("#salaryInfoYear").val();
+            _selectedMonth = $("#salaryInfoMonth").val();
+            _selectedSalary = $("#salaryInfoSalary").val();
+
+            var processContinue = true;
+            if (_selectedEmployee === "") {
+                $("#salaryInfoEmployeeHelp").html("select an employee");
+                $('#salaryInfoEmployeeHelp').removeClass("text-muted");
+                $('#salaryInfoEmployeeHelp').addClass("text-danger");
+                processContinue = false;
+            }
+
+            if (_selectedYear === null) {
+                $("#salaryInfoYearHelp").html("select a year");
+                $('#salaryInfoYearHelp').removeClass("text-muted");
+                $('#salaryInfoYearHelp').addClass("text-danger");
+                processContinue = false;
+            }
+
+            if (_selectedMonth === "") {
+                $("#salaryInfoMonthHelp").html("select a month");
+                $('#salaryInfoMonthHelp').removeClass("text-muted");
+                $('#salaryInfoMonthHelp').addClass("text-danger");
+                processContinue = false;
+            }
+
+            if (_selectedSalary === "") {
+                $("#salaryInfoSalaryHelp").html("enter salary");
+                $('#salaryInfoSalaryHelp').removeClass("text-muted");
+                $('#salaryInfoSalaryHelp').addClass("text-danger");
+                processContinue = false;
+            }
+
+            var _empId = _selectedEmployee.split(" : ")[0];
+
+            if (processContinue) {
+                var dataToSend = _empId + ":" + _selectedYear + "-" + _selectedMonth + "-" + _selectedSalary;
+                //console.log(dataToSend);
+                $.ajax({
+                    url: '/Employees/UpdateSalaryInfo',
+                    type: 'POST',
+                    method: 'POST',
+                    //dataType: 'json',
+                    data: { data: dataToSend },
+                    success: function (_data) {
+                        //console.log("Update Success");
+                        $("#salaryInfoEmployee").val("");
+                        $("#salaryInfoYear").val("");
+                        $("#salaryInfoMonth").val("");
+                        $("#salaryInfoSalary").val("");
+                        toastr.success('Successfully', 'Salary Info Updated', { timeOut: 2500 });
+                        $('#salaryInfoViewCardBodyDynamic').load("/Employees/ShowSalaryInfo/");
+                        $("#SalaryInfoUpdate").modal("hide");
+                    },
+                    error: function (res) {
+                        console.log(res);
+                        //console.log(res.responseText);
+                    }
+                });
+            }
+
+        }
+
+        function ClearHepSalary() {
+            $("#salaryInfoSalaryHelp").html("");
+            $('#salaryInfoSalaryHelp').removeClass("text-danger");
+            $('#salaryInfoSalaryHelp').addClass("text-muted");
+        }
+
+
+        function ShowSalaryInfoByYear(_dataString) {
+            var dataToSend = _dataString;
+            $.ajax({
+                url: '/Employees/ShowSalaryInfoByYear/',
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                //dataType: 'json',
+                data: {
+                    data: dataToSend
+                },
+                success: function (_data) {
+
+                    $("#SalaryDetailByYearCard").html(_data);
+
+                    $('#SalaryDetailByYear').modal('show');
+
+                },
+                error: function (res) {
+                    console.log(res);
+                    console.log(res.responseText);
+                }
+            });
+        }
+
+
+    </script>
+}
+

@@ -1,0 +1,192 @@
+﻿<div class="col-md-6">
+    <!-- CHART PERCENT-->
+    <div class="chart-percent-3 m-b-25">
+        <h3 class="title-3 m-b-25">Item Detail</h3>
+        <div class="chart-note m-b-5">
+            <span class="dot dot--blue"></span>
+            <span>Available</span>
+        </div>
+        <div class="chart-note">
+            <span class="dot dot--red"></span>
+            <span>Assigned</span>
+        </div>
+        <div class="chart-wrap m-t-60">
+            <canvas id="percent-chart2"></canvas>
+        </div>
+    </div>
+    <!-- END CHART PERCENT-->
+</div>
+<div class="col-md-6">
+    <!--Item Drop Down-->
+    <div class="chart-percent-3 m-b-25">
+        <h3 class="title-3 m-b-25"> </h3>
+        <div class="chart-note m-t-50 m-b-5">
+            <span class="dot dot--blue"></span>
+            <span>Availabe</span>
+        </div>
+        <div>
+            <select class="form-control displayDropdown m-b-50" id="availableItem">
+                <option value="" selected disabled>Available</option>
+            </select>
+        </div>
+        <div class="chart-note">
+            <span class="dot dot--red"></span>
+            <span>Assigned</span>
+        </div>
+        <div class="m-b-50">
+            <select class="form-control displayDropdown m-b-100" id="assignedItem">
+                <option value="" selected disabled>Assigned</option>
+            </select>
+        </div>
+        <div>
+            <span>Total Employee :</span> <span id="total-employee"></span>
+        </div>
+    </div>
+    <!--END Item Drop Down-->
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        GetItemPiChart();
+        GetItemDropDown();
+        GetNumberOfEmployee();
+    });
+
+
+    function GetItemPiChart() {
+        let ctx = document.getElementById("percent-chart2");
+
+        $.ajax({
+            url: '/Home/Data_ItemPiChart/',
+            type: 'get',
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            success: function (_data) {
+
+                if (ctx) {
+                    ctx.height = 209;
+                    var myChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            datasets: [
+                                {
+                                    label: "My First dataset",
+                                    data: [_data[0].Value, _data[1].Value],
+                                    backgroundColor: [
+                                        '#00b5e9',
+                                        '#fa4251'
+                                    ],
+                                    hoverBackgroundColor: [
+                                        '#00b5e9',
+                                        '#fa4251'
+                                    ],
+                                    borderWidth: [
+                                        0, 0
+                                    ],
+                                    hoverBorderColor: [
+                                        'transparent',
+                                        'transparent'
+                                    ]
+                                }
+                            ],
+                            labels: [
+                                'Available',
+                                'Assigned'
+                            ]
+                        },
+                        options: {
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            cutoutPercentage: 87,
+                            animation: {
+                                animateScale: true,
+                                animateRotate: true
+                            },
+                            legend: {
+                                display: false,
+                                position: 'bottom',
+                                labels: {
+                                    fontSize: 14,
+                                    fontFamily: "Poppins,sans-serif"
+                                }
+
+                            },
+                            tooltips: {
+                                titleFontFamily: "Poppins",
+                                xPadding: 15,
+                                yPadding: 10,
+                                caretPadding: 0,
+                                bodyFontSize: 16,
+                            }
+                        }
+                    });
+                }
+                
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+
+
+    }
+
+    function GetItemDropDown() {
+        
+        let avlDropdown = document.getElementById("availableItem");
+        let asnDropdown = document.getElementById("assignedItem");
+
+        $.ajax({
+            url: '/Home/Data_ItemDropdown/',
+            type: 'get',
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            success: function (_data) {
+                //console.log(_data);
+                var avl = _data[0].Value;
+                var asn = _data[1].Value;
+                //console.log(avl);
+                //console.log(asn);
+                let opt1 = '<option value="" selected disabled>Available</option> ';
+                let opt2 = '<option value="" selected disabled>Assigned</option> ';
+                
+                for (var i = 0; i < avl.length; i++)
+                {
+                    opt1 += '<option value="' + avl[i].id +'">' + avl[i].name + '</option>';
+                }
+
+                for (var i = 0; i < asn.length; i++) {
+                    opt2 += '<option value="' + asn[i].id + '">' + asn[i].name + '</option>';
+                }
+
+                avlDropdown.innerHTML = opt1;
+                asnDropdown.innerHTML = opt2;
+
+
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+
+    }
+
+    function GetNumberOfEmployee(){
+        $.ajax({
+            url: '/Home/Data_NumberOfEmployee/',
+            type: 'get',
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            success: function (_data) {
+                console.log(_data);
+                console.log(_data[0].Value);
+                $("#total-employee").html(_data[0].Value);
+
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+    }
+</script>

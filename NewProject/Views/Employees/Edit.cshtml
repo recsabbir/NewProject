@@ -1,0 +1,191 @@
+﻿@model WebApplication1.Models.Employee
+@{ViewBag.PageHTML = "Edit Employee"; }
+
+<div class="col-md-2 sidebar px-0">
+    <div class="nav">
+        <ul class="nav-tabs myLeftNav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="~/"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-home fa-stack-1x"></i></span> Home</a>
+
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/Employees/Create"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-user-plus fa-stack-1x"></i></span>Create Employee</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/employees/"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-list-ul fa-stack-1x"></i></span> Employee List</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="col-md-10">
+
+    <div class="row">
+        <div class="col">
+
+        </div>
+    </div>
+
+    <div class="body-content">
+        <div class="row">
+            <div class="col-md-9 px-5">
+                <form method="POST">
+                    @Html.AntiForgeryToken()
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="ID">ID</label>
+                            <input type="text" class="form-control" value="@Model.id" disabled readonly>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" name="name" value="@Model.name">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" class="form-control" id="input-date" name="dob" value="@Convert.ToDateTime(Model.dob).ToString("yyyy-MM-dd")">
+
+
+                            <!-- --<input type="date" class="form-control" id="input-date" name="dob" value=""> -->
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="bgroup">Blood Group</label>
+                            <select class="form-control" name="bgroup">
+
+                                <option @(Model.bgroup == null ? "selected" : "")>Blood Group</option>
+                                <option value="A+" @(Model.bgroup == "A+" ? "selected" : "")>A+</option>
+                                <option value="A-" @(Model.bgroup == "A-" ? "selected" : "")>A-</option>
+                                <option value="B+" @(Model.bgroup == "B+" ? "selected" : "")>B+</option>
+                                <option value="B-" @(Model.bgroup == "B-" ? "selected" : "")>B-</option>
+                                <option value="AB+" @(Model.bgroup == "AB+" ? "selected" : "")>AB+</option>
+                                <option value="AB-" @(Model.bgroup == "AB-" ? "selected" : "")>AB-</option>
+                                <option value="O+" @(Model.bgroup == "O+" ? "selected" : "")>O+</option>
+                                <option value="O-" @(Model.bgroup == "O-" ? "selected" : "")>O-</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="nid">National ID Number</label>
+                            <input type="text" class="form-control" name="nid" value="@Model.nid">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="phone">Phone Number</label>
+                            <input type="text" class="form-control" name="phone" value="@Model.phone">
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" name="email" value="@Model.email">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="address">Present Address</label>
+                            <input type="text" class="form-control" name="address" value="@Model.address">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-6">
+
+                        </div>
+                        <div class="col-6">
+                            <input type="submit" class="form-control btn-primary" value="UPDATE">
+                        </div>
+                    </div>
+                </form>
+
+
+
+            </div>
+
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col">
+                        
+                        @if (Model.pic == null)
+                        {
+                            <img src="~/Content/Logo/Employee.jpg" class="img-rounded employee-photo" alt="Cinque Terre">
+                        }
+                        else
+                        {
+                            <img src="~/Content/Employees/@Model.pic" class="img-thumbnail employee-photo" alt="Cinque Terre">
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <form method="POST" action="/Employees/EditPicture" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.id" />
+                            <div class="custom-file image-uploader">
+                                <input type="file" class="custom-file-input" id="customFile" name="ImageFile">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                            <div>
+                                <input type="submit" class="form-control btn btn-primary image-uploader" value="UPDATE">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<!------------>
+
+
+
+@section scripts{
+
+    
+    <script>
+        // Add the following code if you want the name of the file appear on select
+        $("#customFile").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+
+        $('#datePicker').dateTimePicker({
+            //selectData: "1995-09-09",
+            //showTime: false,
+            dateFormat: "DD/MM/YYYY",
+            positionShift: { top: -30, left: 0 },
+            title: "Select Birth Date",
+        });
+
+
+        //$('#input-date').datepicker({
+        //    //todayBtn: "linked",
+        //    //language: "it",
+        //    //autoclose: true,
+        //    //todayHighlight: true,
+        //    format: 'dd/mm/yyyy'
+        //});
+
+
+        //$(document).ready(function () {
+        //    $('.input-date').datepicker({
+        //        //todayBtn: "linked",
+        //        //language: "it",
+        //        //autoclose: true,
+        //        //todayHighlight: true,
+        //        Format: 'dd/mm/yyyy'
+        //    });
+        //});
+
+
+    </script>
+}

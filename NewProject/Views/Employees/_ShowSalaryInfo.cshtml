@@ -1,0 +1,53 @@
+﻿@model IEnumerable<NewProject.Models.Employee>
+
+@{
+    Layout = null;
+}
+
+<div class="row justify-content-start pb-4">
+    <div class="col-md-12">
+        <table id="tableSalaryInfo" class="table table-responsive-md table-hover table-salaryInformation">
+            <thead class="">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Year</th>
+                    <th>Total Salary</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{int i = 0; }
+                @foreach (var item in Model)
+                {
+                    foreach (var year in item.annualSalaries)
+                    {
+                        i++;
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.name</td>
+                            <td>@year.year</td>
+                            <td>@year.sumSalary</td>
+                            <td><span class="table-data-feature"> <button class="item" title="Detail" onclick="ShowSalaryInfoByYear('@item.id-@year.year')"><i class="zmdi zmdi-view-list-alt"></i></button></span></td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/Scripts/DataTableJQ.js"></script>
+<script>
+    $('#tableSalaryInfo').DataTable({
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+    });
+</script>
+
+
+
+
+

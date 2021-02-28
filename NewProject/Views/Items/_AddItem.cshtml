@@ -1,0 +1,39 @@
+﻿@model IEnumerable<NewProject.Models.ItemCategory>
+@{
+    Layout = null;
+}
+
+<form id="formAddItem">
+    <div class="row justify-content-around pb-4">
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="itemName">Name</label>
+                <input type="text" class="form-control" id="itemName" aria-describedby="itemNameHelp" name="name" autocomplete="off" />
+                <small id="itemNameHelp" class="form-text text-muted"> </small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="itemCategory">Category</label>
+                <select class="form-control" id="itemCategory" aria-describedby="itemCategoryHelp" name="category">
+                    <option value="" selected>Category</option>
+                    @foreach (var item in Model)
+                    {
+                        <option value="@item.id">@item.name</option>
+                    }
+                </select>
+                <small id="itemCategoryHelp" class="form-text text-muted"> </small>
+            </div>
+        </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="itemPrice">Unit Price</label>
+                    <input type="text" class="form-control" id="itemPrice" aria-describedby="itemPriceHelp" name="unit_price" placeholder="" autocomplete="off" />
+                    <small id="itemPriceHelp" class="form-text text-muted"> </small>
+                </div>
+            </div>
+
+        </div>
+</form>
+

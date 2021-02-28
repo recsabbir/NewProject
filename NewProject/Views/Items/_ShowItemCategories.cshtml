@@ -1,0 +1,43 @@
+﻿@model IEnumerable<NewProject.Models.ItemCategory>
+@{
+    Layout = null;
+}
+
+<div class="row justify-content-start pb-4">
+    <div class="col-md-12">
+        <table id="tableItemCategoryList" class="table table-responsive-md table-hover table-salaryInformation">
+            <thead class="">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Priority</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{int i = 0; }
+                @foreach (var item in Model)
+                {
+                    i++;
+                    
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.name</td>
+                        <td>@item.priority</td>
+                        <td><span class="table-data-feature"> <button class="item" title="Edit" onclick="GetItemCategory('@item.id')" data-toggle="modal" data-target="#itemCategoryEditModal"><i class="zmdi zmdi-edit"></i></button> <button class="item" title="Delete" onclick="SelectItemCategoryID('@item.id')" data-toggle="modal" data-target="#DeleteItemCategoryModal"> <i class="zmdi zmdi-delete"></i> </button></span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/Scripts/DataTableJQ.js"></script>
+<script>
+    $('#tableItemCategoryList').DataTable({
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+    });
+</script>
+

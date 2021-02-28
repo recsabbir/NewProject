@@ -1,0 +1,62 @@
+﻿@*@model IEnumerable<NewProject.Models.ItemCategory>*@
+@model dynamic
+@{
+    Layout = null;
+}
+
+<form id="formAddItemDistribution">
+    <div class="row justify-content-around pb-4">
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="distributionItem">Available Item</label>
+                <select class="form-control" id="distributionItem" aria-describedby="distributionItemHelp" name="item_id">
+                    <option value="" selected>Item</option>
+                    @foreach (var item in Model.Items)
+                    {
+                        <option value="@item.id">@item.name</option>
+                    }
+                </select>
+                <small id="distributionItemHelp" class="form-text text-muted"> </small>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="distributionEmployee">Employee</label>
+                <select class="form-control" id="distributionEmployee" aria-describedby="distributionEmployeeHelp" name="employee_id">
+                    <option value="" selected>Employee</option>
+                    @foreach (var employee in Model.Employees)
+                    {
+                        <option value="@employee.id">@employee.name</option>
+                    }
+                </select>
+                <small id="distributionEmployeeHelp" class="form-text text-muted"> </small>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="distributionStartDate">From</label>
+                <input type="date" class="form-control" id="distributionStartDate" aria-describedby="distributionStartDateHelp" name="start_date">
+                <small id="distributionStartDateHelp" class="form-text text-muted"> </small>
+            </div>
+        </div>
+
+    </div>
+
+    @*<div class="row justify-content-around pb-4">
+        
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="distributionEndDate">To</label>
+                <input type="date" class="form-control" id="distributionEndDate" aria-describedby="distributionEndDateHelp" name="end_date">
+                <small id="distributionEndDateHelp" class="form-text text-muted"> </small>
+            </div>
+        </div>
+    </div>*@
+
+</form>
+
+

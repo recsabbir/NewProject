@@ -1,0 +1,67 @@
+﻿@*@model NewProject.Models.Item*@
+@model dynamic
+@{
+    Layout = null;
+}
+
+
+        <div class="modal-body">
+
+            <form id="itemUpdateForm">
+
+                <input type="hidden" name="id" id="updateItemId" value="@Model.Item.id">
+
+                <div class="row justify-content-around">
+
+                    <div class="col-md-12">
+
+                        <div class="row justify-content-around pb-4">
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="updateItemName">Name</label>
+                                    <input type="text" class="form-control" id="updateItemName" aria-describedby="updateItemNameHelp" name="name" value="@Model.Item.name" required>
+                                    <small id="updateItemNameHelp" class="form-text text-muted"> </small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="updateItemCategory">Category</label>
+                                    <select class="form-control" id="updateItemCategory" aria-describedby="updateItemCategoryHelp" name="category_id">
+                                        <option value="" selected>Category</option>
+                                        @foreach (var cat in Model.Category)
+                                        {
+                                            if (cat.id == Model.Item.category_id)
+                                            {
+                                                <option value="@cat.id" selected>@cat.name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@cat.id">@cat.name</option>
+                                            }
+
+                                        }
+
+
+                                    </select>
+                                    <small id="updateItemCategoryHelp" class="form-text text-muted"> </small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="updateItemPrice">Price</label>
+                                    <input type="text" class="form-control" id="updateItemPrice" aria-describedby="updateItemPriceHelp" name="unit_price" value="@Model.Item.unit_price">
+                                    <small id="updateItemPriceHelp" class="form-text text-muted"> </small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+        

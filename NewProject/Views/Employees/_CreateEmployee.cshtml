@@ -1,0 +1,127 @@
+﻿@{
+    Layout = null;
+}
+
+<form id="employeeCreateForm">
+
+    <input type="hidden" name="id" id="createEmployeeId" value="0">
+
+    <div class="row justify-content-around">
+
+        <div class="col-md-9">
+
+            <div class="row justify-content-between pb-3">
+
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="createEmployeeName">Name</label>
+                        <input type="text" class="form-control" id="createEmployeeName" aria-describedby="nameHelp" name="name" placeholder="Enter Name" required>
+                        <small id="nameHelp" class="form-text text-muted"> </small>
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="createEmployeeBgroup">Blood Group</label>
+                        <select class="form-control" id="createEmployeeBgroup" aria-describedby="bgroupHelp" name="bgroup">
+                            <option value="" selected>Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                        <small id="bgroupHelp" class="form-text text-muted"> </small>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="createEmployeeDob">Date Of Birth</label>
+                        <input type="date" class="form-control" id="createEmployeeDob" aria-describedby="dobHelp" name="dob" value="">
+                        <small id="dobHelp" class="form-text text-muted"> </small>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row justify-content-around pb-4">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="createEmployeeNID">NID Number</label>
+                        <input type="text" class="form-control" id="createEmployeeNID" aria-describedby="nidHelp" name="nid" placeholder="Enter NID Number">
+                        <small id="nidHelp" class="form-text text-muted"> </small>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="createEmployeePhone">Phone Number</label>
+                        <input type="text" class="form-control" id="createEmployeePhone" aria-describedby="phoneHelp" name="phone" placeholder="Enter Phone Number">
+                        <small id="phoneHelp" class="form-text text-muted"> </small>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="createEmployeeJoininDate">Joining Date</label>
+                        <input type="date" class="form-control" id="createEmployeeJoininDate" aria-describedby="joiningDateHelp" name="joining_date" value="">
+                        <small id="joiningDateHelp" class="form-text text-muted"> </small>
+                    </div>
+                </div>
+
+            </div>
+
+            
+            <div class="row justify-content-start pb-4">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="createEmployeeEmail">Email Address</label>
+                        <input type="text" class="form-control" id="createEmployeeEmail" aria-describedby="emailHelp" name="email" placeholder="Enter Email Address" required>
+                        <small id="emailHelp" class="form-text text-muted"> </small>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="createEmployeeAddress">Present Address</label>
+                        <input type="text" class="form-control" id="createEmployeeAddress" aria-describedby="addressHelp" name="address" placeholder="Enter Present Address">
+                        <small id="addressHelp" class="form-text text-muted"> </small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="row justify-content-end">
+
+                <div class="col-md-10">
+                    <div id="createEmployeeImage">
+                        <img src="/Content/Logo/Employee.jpg" id="createEmployeeImageThumbnai" class="img-rounded employee-photo" alt="Cinque Terre">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-end">
+                <div class="col-md-10">
+                    <div class="custom-file image-uploader">
+                        <input type="file" class="custom-file-input" id="customFileCreate" name="ImageFile" onchange="ChangePictureLabel_Create()">
+                        <label class="custom-file-label" id="custom-file-label-create" for="customFile">Change</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+

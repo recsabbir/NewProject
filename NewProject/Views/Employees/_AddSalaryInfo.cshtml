@@ -1,0 +1,50 @@
+﻿@*@model NewProject.Models.Employee*@
+@{
+    Layout = null;
+}
+<form id="formSalaryInfo">
+    <div class="row justify-content-start pb-4">
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="salaryInfoEmployee">Employee</label>
+                <input type="text" class="form-control" id="salaryInfoEmployee" aria-describedby="salaryInfoEmployeeHelp" name="employee"/>
+                <small id="salaryInfoEmployeeHelp" class="form-text text-muted"> </small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="salaryInfoYear">Year</label>
+                <select class="form-control" id="salaryInfoYear" aria-describedby="salaryInfoYearHelp" name="year" onchange="SelectSalaryInfoMonth()">
+                    @*<option value="" selected>Year</option>*@
+                    
+
+                </select>
+                <small id="salaryInfoYearHelp" class="form-text text-muted"> </small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="salaryInfoMonth">Month</label>
+                <select class="form-control" id="salaryInfoMonth" aria-describedby="salaryInfoMonthHelp" name="month" onchange="SelectSalaryInfoSalary()">
+                    @*<option value="" selected>Month</option>*@
+                    
+
+                </select>
+                <small id="salaryInfoMonthHelp" class="form-text text-muted"> </small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="salaryInfoSalary">Salary</label>
+                <input type="text" class="form-control" id="salaryInfoSalary" aria-describedby="salaryInfoSalaryHelp" name="salary" placeholder="Salary Amount" onchange="ClearHepSalary()"/>
+                <small id="salaryInfoSalaryHelp" class="form-text text-muted"> </small>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+
+

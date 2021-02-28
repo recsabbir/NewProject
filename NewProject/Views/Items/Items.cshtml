@@ -1,0 +1,292 @@
+﻿@{ ViewBag.Title = "NP | Items"; }
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-header" id="itemViewHeading">
+                <div class="row justify-content-around">
+                    <div class="col "><h5>Items</h5></div>
+
+                    <div class="col text-right"><button id="itemAddButton"><i class="fas fa-plus-circle"></i> Add</button></div>
+                </div>
+            </div>
+
+            <div id="itemCardBody">
+                <div class="card-body" id="itemCardBodyDynamic">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            //Activating SideNav
+            $("#sideNavItems").addClass("active");
+
+
+            //Loading Item Table
+            GetItemList();
+
+            //GetSalaryInfoUpdatePage();
+
+            //$("#salaryInfoHeadingButton").click(function () {
+            //    GetSalaryInfosEmployees();
+            //});
+
+            $("#itemAddButton").click(function () {
+                GetAddItemPage();
+                //GetSalaryInfosEmployees();
+                $("#AddItem").modal("show");
+
+            });
+
+            $("#buttonDeleteItem").click(function () {
+                DeleteItem();
+            });
+
+            $("#buttonUpdateItem").click(function () {
+                UpdateItem();
+            });
+
+            
+
+
+
+
+        });
+
+        function GetItemList() {
+            $.ajax({
+                url: '/Items/ShowItems',
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                //dataType: 'json',
+                data: "{}",
+                success: function (_data) {
+
+                    $("#itemCardBodyDynamic").html(_data);
+
+
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+        }
+
+
+        //To Load AddItemCategory Page in Modal
+        function GetAddItemPage() {
+            $.ajax({
+                url: '/Items/AddItem',
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+
+                success: function (_data) {
+
+                    $("#AddItemBody").html(_data);
+
+                },
+                error: function (res) {
+                    console.log(res);
+                    console.log(res.responseText);
+                }
+            });
+        }
+
+
+        function AddItem() {
+            _enteredItemName = $("#itemName").val();
+            _enteredItemCategory = $("#itemCategory").val();
+            _enteredItemPrice = $("#itemPrice").val();
+
+            var processContinue = false;
+
+
+            if (_enteredItemName == "") {
+                //console.log("Username Empty");
+                $("#itemNameHelp").html("Insert a name");
+                $('#itemNameHelp').removeClass("text-muted");
+                $('#itemNameHelp').addClass("text-danger");
+                processContinue = false;
+            } else {
+
+                $("#itemNameHelp").text("");
+                $('#itemNameHelp').addClass("text-muted");
+                $('#itemNameHelp').removeClass("text-danger");
+                processContinue = true;
+            }
+
+            if (_enteredItemCategory == "") {
+                //console.log("Username Empty");
+                $("#itemCategoryHelp").html("Select a category.");
+                $('#itemCategoryHelp').removeClass("text-muted");
+                $('#itemCategoryHelp').addClass("text-danger");
+                processContinue = false;
+            } else {
+
+                $("#itemCategoryHelp").text("");
+                $('#itemCategoryHelp').addClass("text-muted");
+                $('#itemCategoryHelp').removeClass("text-danger");
+                processContinue = true;
+            }
+
+
+            if (processContinue) {
+                var dataToSend = _enteredItemName + ":" + _enteredItemCategory + ":" + _enteredItemPrice;
+                //console.log(dataToSend);
+                $.ajax({
+                    url: '/Items/AddItem',
+                    type: 'POST',
+                    method: 'POST',
+                    //dataType: 'json',
+                    data: { data: dataToSend },
+                    success: function (_data) {
+                        console.log(_data);
+                        
+                        toastr.success('Successfully', 'Item Added', { timeOut: 2500 });
+                        $('#itemCardBodyDynamic').load("/Items/ShowItems/");
+                        $("#AddItem").modal("hide");
+                    },
+                    error: function (res) {
+                        console.log(res);
+                        //console.log(res.responseText);
+                    }
+                });
+            }
+
+
+
+        }
+
+        function SelectItemID(_id) {
+
+            $('#selectedItemDeleteId').val(_id);
+
+        }
+
+        function DeleteItem() {
+            //console.log("Delete Employee Triggered");
+            var _id = $('#selectedItemDeleteId').val();
+            $.ajax({
+                url: "/Items/DeleteItem/" + _id,
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                //dataType: 'json',
+                success: function (_data) {
+                    //console.log(_data);
+                    //console.log("Delete Employee Success");
+                    if (_data == "True") {
+                        GetItemList();
+                        $("#DeleteItemModal").modal("hide");
+                        toastr.success('Successfully!!!', 'Item Deleted', { timeOut: 2000 });
+                    } else {
+                        $("#DeleteItemModal").modal("hide");
+                        toastr.error('Item could not be deleted.', 'OOPS', { timeOut: 2000 });
+                    }
+
+
+                },
+                error: function (res) {
+                    //console.log("Delete Employee Error");
+                    console.log(res);
+                }
+            });
+        }
+
+        function GetItem(_id) {
+
+            $.ajax({
+                url: '/Items/GetItem/' + _id,
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                //dataType: 'json',
+                success: function (_data) {
+                    $('#itemEditModalBody').html(_data);
+
+                    //$('#updateCreateEmployee').val("UPDATE");
+
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+        }
+
+        function UpdateItem() {
+            _enteredItemId = $("#updateItemId").val();
+            _enteredItemName = $("#updateItemName").val();
+            _enteredItemCategory = $("#updateItemCategory").val();
+            _enteredItemPrice = $("#updateItemPrice").val();
+
+            var processContinue = false;
+
+
+            if (_enteredItemName == "") {
+                //console.log("Username Empty");
+                $("#updateItemNameHelp").html("Insert a name");
+                $('#updateItemNameHelp').removeClass("text-muted");
+                $('#updateItemNameHelp').addClass("text-danger");
+                processContinue = false;
+            } else {
+
+                $("#updateItemNameHelp").text("");
+                $('#updateItemNameHelp').addClass("text-muted");
+                $('#updateItemNameHelp').removeClass("text-danger");
+                processContinue = true;
+            }
+
+            if (_enteredItemCategory == "") {
+                //console.log("Username Empty");
+                $("#updateItemCategoryHelp").html("Select a category.");
+                $('#updateItemCategoryHelp').removeClass("text-muted");
+                $('#updateItemCategoryHelp').addClass("text-danger");
+                processContinue = false;
+            } else {
+
+                $("#updateItemCategoryHelp").text("");
+                $('#updateItemCategoryHelp').addClass("text-muted");
+                $('#updateItemCategoryHelp').removeClass("text-danger");
+                processContinue = true;
+            }
+
+
+            if (processContinue) {
+                var dataToSend = _enteredItemId + ":" +_enteredItemName + ":" + _enteredItemCategory + ":" + _enteredItemPrice;
+                //console.log(dataToSend);
+                $.ajax({
+                    url: '/Items/UpdateItem',
+                    type: 'POST',
+                    method: 'POST',
+                    //dataType: 'json',
+                    data: { data: dataToSend },
+                    success: function (_data) {
+                        console.log(_data);
+
+                        toastr.success('Successfully', 'Item Updated', { timeOut: 2500 });
+                        $('#itemCardBodyDynamic').load("/Items/ShowItems/");
+                        $("#itemEditModal").modal("hide");
+                    },
+                    error: function (res) {
+                        console.log(res);
+                        //console.log(res.responseText);
+                    }
+                });
+            }
+
+
+
+        }
+
+
+
+
+    </script>
+}

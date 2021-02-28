@@ -1,0 +1,57 @@
+﻿@model IEnumerable<NewProject.Models.ItemDistribution>
+@{
+    Layout = null;
+}
+
+<div class="row justify-content-start pb-4">
+    <div class="col-md-12">
+        <table id="tableItemDistributionList" class="table table-responsive-md table-hover table-salaryInformation">
+            <thead class="">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Assigned Employee</th>
+                    <th>From</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{int i = 0; }
+                @foreach (var data in Model)
+                {
+                    i++;
+
+                    <tr>
+                        <td>@i</td>
+                        <td>@data.item.name</td>
+                        <td>@data.employee.name</td>
+                        <td>@data.start_date.Value.Date.ToString("dd-MMM-yyyy")</td>
+                        @*<td>@if (String.IsNullOrEmpty(data.end_date.ToString()))
+                            {
+                                <span>Not Set</span>
+                            }
+                            else
+                            {
+                                <span>@data.end_date.Value.Date.ToString("dd-MMM-yyyy")</span>
+                            }
+                        </td>*@
+
+                        <td><span class="table-data-feature"> <button class="item" title="Edit" onclick="GetItemDistribution('@data.id')" data-toggle="modal" data-target="#itemDistributionEditModal"><i class="zmdi zmdi-edit"></i></button> <button class="item" title="Delete" onclick="SelectItemDistributionID('@data.id')" data-toggle="modal" data-target="#DeleteItemDistributionModal"> <i class="zmdi zmdi-delete"></i> </button></span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/Scripts/DataTableJQ.js"></script>
+<script>
+    $('#tableItemDistributionList').DataTable({
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+    });
+</script>
+
+
+

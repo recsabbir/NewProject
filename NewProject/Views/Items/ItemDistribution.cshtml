@@ -1,0 +1,270 @@
+﻿@{ ViewBag.Title = "NP | Item Distribution"; }
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-header" id="itemDistributionViewHeading">
+                <div class="row justify-content-around">
+                    <div class="col "><h5>Item Distribution</h5></div>
+
+                    <div class="col text-right"><button id="itemDistributionAddButton"><i class="fas fa-plus-circle"></i> Distribute</button></div>
+                </div>
+            </div>
+
+            <div id="itemDistributionCardBody">
+                <div class="card-body" id="itemDistributionCardBodyDynamic">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            //Activating SideNav
+            $("#sideNavItemDistribution").addClass("active");
+
+
+            //Loading Item Table
+            GetItemDistributionList();
+
+            //GetSalaryInfoUpdatePage();
+
+            //$("#salaryInfoHeadingButton").click(function () {
+            //    GetSalaryInfosEmployees();
+            //});
+
+            $("#itemDistributionAddButton").click(function () {
+                GetAddItemDistributionPage();
+                //GetSalaryInfosEmployees();
+                $("#AddItemDistribution").modal("show");
+
+            });
+
+            $("#buttonAddItemDistribution").click(function () {
+                AddItemDistribution();
+            });
+
+            $("#buttonDeleteItemDistribution").click(function () {
+                DeleteItemDistribution();
+            });
+
+            $("#buttonUpdateItemDistribution").click(function () {
+                UpdateItemDistribution();
+            });
+
+
+        });
+
+        function GetItemDistributionList() {
+            $.ajax({
+                url: '/Items/ShowItemDistribution',
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                //dataType: 'json',
+                data: "{}",
+                success: function (_data) {
+
+                    $("#itemDistributionCardBodyDynamic").html(_data);
+
+
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+        }
+
+
+        //To Load AddItemCategory Page in Modal
+        function GetAddItemDistributionPage() {
+            $.ajax({
+                url: '/Items/AddItemDistribution',
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+
+                success: function (_data) {
+
+                    $("#AddItemDistributionBody").html(_data);
+
+                },
+                error: function (res) {
+                    console.log(res);
+                    console.log(res.responseText);
+                }
+            });
+        }
+
+        function AddItemDistribution() {
+            _enteredItemId = $("#distributionItem").val();
+            _enteredEmployeeId = $("#distributionEmployee").val();
+            _enteredStartDate = $("#distributionStartDate").val();
+            //_enteredEndDate = $("#distributionEndDate").val();
+           
+            var processContinue = false;
+
+            if (_enteredItemId == "") {
+                //console.log("Username Empty");
+                $("#distributionItemHelp").html("Select an item.");
+                $('#distributionItemHelp').removeClass("text-muted");
+                $('#distributionItemHelp').addClass("text-danger");
+                processContinue = false;
+            } else {
+
+                $("#distributionItemHelp").text("");
+                $('#distributionItemHelp').addClass("text-muted");
+                $('#distributionItemHelp').removeClass("text-danger");
+                processContinue = true;
+            }
+
+            if (_enteredEmployeeId == "") {
+                
+                $("#distributionEmployeeHelp").html("Select an employee.");
+                $('#distributionEmployeeHelp').removeClass("text-muted");
+                $('#distributionEmployeeHelp').addClass("text-danger");
+                processContinue = false;
+            } else {
+
+                $("#distributionEmployeeHelp").text("");
+                $('#distributionEmployeeHelp').addClass("text-muted");
+                $('#distributionEmployeeHelp').removeClass("text-danger");
+                processContinue = true;
+            }
+
+
+            if (processContinue) {
+                var dataToSend = _enteredItemId + ":" + _enteredEmployeeId + ":" + _enteredStartDate;
+                //console.log(dataToSend);
+                $.ajax({
+                    url: '/Items/AddItemDistribution',
+                    type: 'POST',
+                    method: 'POST',
+                    //dataType: 'json',
+                    data: { data: dataToSend },
+                    success: function (_data) {
+                        toastr.success('Successfully', 'Item Distributed', { timeOut: 2500 });
+                        $('#itemDistributionCardBodyDynamic').load("/Items/ShowItemDistribution/");
+                        $("#AddItemDistribution").modal("hide");
+                    },
+                    error: function (res) {
+                        console.log(res);
+                        //console.log(res.responseText);
+                    }
+                });
+            }
+
+
+
+        }
+
+        function SelectItemDistributionID(_id) {
+
+            $('#selectedItemDistributionDeleteId').val(_id);
+
+        }
+
+        function DeleteItemDistribution() {
+            
+            var _id = $('#selectedItemDistributionDeleteId').val();
+            $.ajax({
+                url: "/Items/DeleteItemDistribution/" + _id,
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (_data) {
+                    
+                    if (_data == "True") {
+                        GetItemDistributionList();
+                        $("#DeleteItemDistributionModal").modal("hide");
+                        toastr.success('Successfully!!!', 'Item Distribution Record Deleted', { timeOut: 2000 });
+                    } else {
+                        $("#DeleteItemDistributionModal").modal("hide");
+                        toastr.error('Requested record could not be deleted.', 'OOPS', { timeOut: 2000 });
+                    }
+
+
+                },
+                error: function (res) {
+                    //console.log("Delete Employee Error");
+                    console.log(res);
+                }
+            });
+        }
+
+        function GetItemDistribution(_id) {
+
+            $.ajax({
+                url: '/Items/GetItemDistribution/' + _id,
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                //dataType: 'json',
+                success: function (_data) {
+                    $('#itemDistributionEditModalBody').html(_data);
+
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+        }
+
+        function UpdateItemDistribution() {
+            _enteredItemDistributionId = $("#updateItemDistributionId").val();
+            _enteredEmployeeId = $("#updateItemDistributionEmployee").val();
+            _enteredStartDate = $("#updateItemDistributionStartDate").val();
+            
+
+            var processContinue = false;
+
+
+            if (_enteredEmployeeId == "") {
+                
+                $("#updateItemDistributionEmployeeHelp").html("Select an employee.");
+                $('#updateItemDistributionEmployeeHelp').removeClass("text-muted");
+                $('#updateItemDistributionEmployeeHelp').addClass("text-danger");
+                processContinue = false;
+            } else {
+
+                $("#updateItemDistributionEmployeeHelp").text("");
+                $('#updateItemDistributionEmployeeHelp').addClass("text-muted");
+                $('#updateItemDistributionEmployeeHelp').removeClass("text-danger");
+                processContinue = true;
+            }
+
+
+            if (processContinue) {
+                var dataToSend = _enteredItemDistributionId + ":" + _enteredEmployeeId + ":" + _enteredStartDate;
+                //console.log(dataToSend);
+                $.ajax({
+                    url: '/Items/UpdateItemDistribution',
+                    type: 'POST',
+                    method: 'POST',
+                    //dataType: 'json',
+                    data: { data: dataToSend },
+                    success: function (_data) {
+                        
+                        toastr.success('Successfully', 'Item Distribution Updated', { timeOut: 2500 });
+                        $('#itemDistributionCardBodyDynamic').load("/Items/ShowItemDistribution/");
+                        $("#itemDistributionEditModal").modal("hide");
+                    },
+                    error: function (res) {
+                        console.log(res);
+                        //console.log(res.responseText);
+                    }
+                });
+            }
+
+
+
+        }
+
+
+
+
+    </script>
+}

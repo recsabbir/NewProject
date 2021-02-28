@@ -1,0 +1,45 @@
+﻿@model NewProject.Models.ItemCategory
+
+@{
+    Layout = null;
+}
+
+
+<div class="modal-body">
+
+    <form id="itemUpdateForm">
+
+        <input type="hidden" name="id" id="updateCategoryId" value="@Model.id">
+
+        <div class="row justify-content-around">
+
+            <div class="col-md-12">
+
+                <div class="row justify-content-around pb-4">
+
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="updateCategoryName">Name</label>
+                            <input type="text" class="form-control" id="updateCategoryName" aria-describedby="updateCategoryNameHelp" name="name" value="@Model.name" required>
+                            <small id="updateCategoryNameHelp" class="form-text text-muted"> </small>
+                        </div>
+                    </div>
+                   
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="updateCategoryPriority">Priority</label>
+                            <input type="text" class="form-control" id="updateCategoryPriority" aria-describedby="updateCategoryPriorityHelp" name="priority" value="@Model.priority">
+                            <small id="updateCategoryPriorityHelp" class="form-text text-muted"> </small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+

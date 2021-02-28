@@ -1,0 +1,246 @@
+﻿/*.custom-file-label{
+    max-width:150px;;
+}*/
+
+.loginButton {
+    height: 30px;
+    width: 60px;
+    padding-top: 0px;
+    text-align: center;
+    margin: 0px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+/*.employee-photo {
+    width: 170px;
+    height: 170px;
+    padding: 0px;
+}*/
+
+/*.datatable-employee-photo {
+    width: 50px;
+    height: 50px;
+    padding: 0px;
+}*/
+
+/*.image-uploader {
+    margin-top: 5px;
+}*/
+
+.textsm {
+    font-size: 13px;
+}
+
+/*.buttonCreateEmployee {
+    
+}*/
+
+/*.date-picker {
+    width: 100px;
+}*/
+
+/*.myLeftNav {
+    margin-top: 0px;
+    padding-left: 0px;
+    list-style: none;
+    width: 100%;
+}*/
+
+/*.nav-tabs {
+    border-bottom: 1px solid #f8f9fa;
+}
+*/
+/*.brandName {
+    font-size: 16px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}*/
+
+
+
+/*.nav-tabs .nav-link {
+    color: black;
+    background-color: white;
+    border-bottom: 1px solid #f8f9fa;
+}*/
+
+/*.nav-item a {
+    color: black;
+    text-decoration: none;
+    background-color: transparent;
+}*/
+
+/*
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    color: #fff;
+    background-color: #2ba9a9 !important;
+}*/
+
+/*.sidebar {
+    background-color: #fff;
+    box-shadow: 3px 6px 10px rgb(0 0 0 / 8%);
+    margin-top: 7px;
+}*/
+
+/*.body-content {
+    min-height:500px;
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 7px;
+    box-shadow: 3px 6px 10px rgb(0 0 0 / 8%);
+}*/
+
+/*footer.footer {
+    padding: 15px 0px;
+    background-color: #fff;
+    margin-top: 20px;
+}*/
+
+/*.loginForm {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: #e9edf6;
+    box-shadow: 2px 2px 5px rgb(128, 128, 128);
+}
+
+.loginPageBrandName {
+    text-align: center;
+    height: 35px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    background-color: #e9edf6;
+    box-shadow: 2px 1px 4px rgb(128, 128, 128);
+}
+
+.loginPageBrandName a{
+    color:black;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size:16px;
+    text-decoration:none;
+}
+*/
+
+.btn:not(:disabled):not(.disabled) {
+    text-decoration: none;
+}
+
+.img-thumbnail {
+    padding: .05rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    
+    max-height: 45px;
+    width: auto;
+}
+
+/*.table-data-feature .item :hover {
+    background-color: #ff0000;
+}*/
+
+.table-salaryInformation thead {
+    background-color: #2a2a2a;
+    color: #f6f5f5;
+}
+
+.table-salaryInformation thead tr th {
+    padding-left:10px;
+ }
+
+.table-salaryInformation thead tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+}
+.table-salaryInformation thead tr:first-child th:last-child {
+    border-top-right-radius: 10px;
+    text-align:right;
+}
+
+
+.table-salaryInformation tbody tr:hover{
+    background-color:#dee2e6;
+}
+
+.table-salaryInformation tbody tr td:last-child{
+    text-align: center;
+}
+
+.table-data-action {
+    display: block;
+    height: 30px;
+    width: 30px;
+    
+    border-radius: 100%;
+    background-color: #bdbdbd;
+}
+
+
+#salaryInfoEmployee {
+    position: relative;
+    z-index: 10000;
+}
+
+.ui-autocomplete {
+    z-index: 9999 !important;
+}
+
+
+
+/*Login Page Style*/
+.login-container-mid {
+    //padding: 30px;
+    //background-color: #b9eaed;
+    //border-top:1px solid #808080;
+    //border-left:1px solid #808080;
+    border: 0.005rem solid #808080;
+    border-radius: 6px;
+    box-shadow: #c2c7c4 8px 8px;
+}
+
+.login-page-left {
+    padding: 30px 0px 30px 0px;
+    margin: 0px;
+    min-height: 100%;
+    border-top-left-radius:6px;
+    border-bottom-left-radius:6px;
+    //margin-top:100px;
+    //background-color: #f888ef;
+    background-color: #a6a8ce;
+    text-align: center;
+    
+}
+.logo-link{
+    margin-top:33%;
+}
+
+.login-page-right {
+    //background-color: #f888ef;
+    margin:0px;
+    padding: 0px 30px 30px 30px;
+}
+
+.login-label{
+    font-size:larger;
+}
+
+.m-b-148{
+    margin-bottom:148px;
+}
+
+.login-error-msg span {
+    color: red;
+}
+
+.displayDropdown {
+    display: block;
+    width: 40%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
