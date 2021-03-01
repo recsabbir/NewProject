@@ -2,6 +2,8 @@
     Layout = null;
 }
 
+@{var userCookie = Request.Cookies["userInfo"]; }
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,19 +64,21 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Email Address</label>
-                                            <input class="au-input au-input--full" type="text" id="login-username" name="username" placeholder="username" autocomplete="off">
-                                        </div>
-                                        <div class="form-group">
+                                            <input class="au-input au-input--full" type="text" id="login-username" name="username" placeholder="username" value='@(userCookie == null ? "" : userCookie["username"] )' autocomplete="off">
+
+</div>
+
+<div class="form-group">
                                             <label>Password</label>
-                                            <input class="au-input au-input--full" type="password" id="login-password" name="password" placeholder="Password">
+                                            <input class="au-input au-input--full" type="password" id="login-password" name="password" value='@(userCookie == null ? "" : userCookie["password"] )' placeholder="Password">
                                         </div>
                                         <div class="login-checkbox">
                                             <label>
-                                                <input type="checkbox" name="rememberMe">Remember Me
+                                                <input type="checkbox" name="rememberMe" id="remember-me">Remember Me
                                             </label>
                                             @*<label>
-                                            <a href="#">Forgotten Password?</a>
-                                        </label>*@
+                                                    <a href="#">Forgotten Password?</a>
+                                                </label>*@
                                         </div>
                                         <div class="text-right">
                                             <button class="btn btn-success" type="submit" id="login-button">log in</button>
@@ -83,18 +87,18 @@
                                             <span id="login-error-msg-span"></span>
                                         </div>
                                         @*<div class="social-login-content">
-                                        <div class="social-button">
-                                            <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with facebook</button>
-                                            <button class="au-btn au-btn--block au-btn--blue2">sign in with twitter</button>
-                                        </div>
-                                    </div>*@
+                                                <div class="social-button">
+                                                    <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with facebook</button>
+                                                    <button class="au-btn au-btn--block au-btn--blue2">sign in with twitter</button>
+                                                </div>
+                                            </div>*@
                                     </form>
                                     @*<div class="register-link">
-                                    <p>
-                                        Don't you have account?
-                                        <a href="#">Sign Up Here</a>
-                                    </p>
-                                </div>*@
+                                            <p>
+                                                Don't you have account?
+                                                <a href="#">Sign Up Here</a>
+                                            </p>
+                                        </div>*@
                                 </div>
                             </div>
                         </div>
@@ -106,11 +110,12 @@
             </footer>
         </div>
 
-        
+
     </div>
 
     <!-- Jquery JS-->
     <script src="~/vendor/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/JQCookie.js"></script>
     <!-- Bootstrap JS-->
     <script src="~/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="~/vendor/bootstrap-4.1/bootstrap.min.js"></script>
@@ -142,20 +147,32 @@
 
             $("#login_form").submit(function (e) {
                 e.preventDefault();
-                LryLogin();
+                TryLogin();
             });
+            //var cook = $.cookie("userInfo");
+
+            //if (cook != null) {
+            //    console.log("cookie found");
+            //    $("#login-username").val(cook["username"]);
+            //    $("#login-password").val(cook["password"]);
+            //}
+
+
         });
 
-        function LryLogin()
-        {
+        function TryLogin() {
             _enteredUsername = $("#login-username").val();
             _enteredPassword = $("#login-password").val();
-            
+            _rememberMe = "false";
+            if ($("#remember-me").is(":checked")) {
+                _rememberMe = "true";
+            }
+
             var processContinue = false;
 
-              
+
             if (_enteredUsername == "") {
-                console.log("Username Empty");
+                //console.log("Username Empty");
                 $("#login-error-msg-span").html("Insert Username");
                 //$('#login-error-msg-span').removeClass("text-muted");
                 //$('#login-error-msg-span').addClass("text-danger");
@@ -169,7 +186,7 @@
 
             if (processContinue) {
                 if (_enteredPassword == "") {
-                    console.log("Password Empty");
+                    //console.log("Password Empty");
                     $("#login-error-msg-span").html("Enter Password");
                     //$('#login-error-msg-span').removeClass("text-muted");
                     //$('#login-error-msg-span').addClass("text-danger");
@@ -182,12 +199,12 @@
                 }
             }
 
-            
 
-           
+
+
 
             if (processContinue) {
-                var dataToSend = _enteredUsername + ":" + _enteredPassword;
+                var dataToSend = _enteredUsername + ":" + _enteredPassword + ":" + _rememberMe;
                 //console.log(dataToSend);
                 $.ajax({
                     url: '/Login',

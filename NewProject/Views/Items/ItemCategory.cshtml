@@ -193,7 +193,11 @@
                         GetItemCategoryList();
                         $("#DeleteItemCategoryModal").modal("hide");
                         toastr.success('Successfully!!!', 'Item Category Deleted', { timeOut: 2000 });
-                    } else {
+                    } else if (_data == "Engaged") {
+                        $("#DeleteItemCategoryModal").modal("hide");
+                        toastr.error('Item Category is Engaged.', 'Sorry', { timeOut: 2000 });
+                    }
+                    else {
                         $("#DeleteItemCategoryModal").modal("hide");
                         toastr.error('Item Category could not be deleted.', 'OOPS', { timeOut: 2000 });
                     }

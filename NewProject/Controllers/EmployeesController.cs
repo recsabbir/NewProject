@@ -366,9 +366,16 @@ namespace NewProject.Controllers
 
         //POST: Employees/DeleteEmployee/5
         [HttpPost]
-        public bool DeleteEmployee(int id)
+        public ActionResult DeleteEmployee(int id)
         {
             Employee employee = new Employee();
+            var _user = Session["user"] as User;
+
+            if(_user.employee_id == id)
+            {
+                return Content("SamePerson");
+            }
+
 
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
             {
@@ -378,7 +385,7 @@ namespace NewProject.Controllers
 
             if (employee == null)
             {
-                return false;
+                return Content("False");
             }
 
             string im = employee.pic;
@@ -387,19 +394,32 @@ namespace NewProject.Controllers
 
             try
             {
+                bool deletable = false;
+
                 using( TransactionScope scope = new TransactionScope())
                 {
                     using (IDbConnection db1 = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
                     {
-                        string sqlQuery1 = "Delete From Employees Where id = " + employee.id;
-                        int rowsAffected1 = db1.Execute(sqlQuery1);
+                        string sqlQuery1 = "SELECT id FROM ItemDistributions WHERE employee_id="+id;
+                        int numberOfOccurance = db1.Query<Employee>(sqlQuery1).ToList().Count;
 
-                        using (IDbConnection db2 = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
+                        if(numberOfOccurance == 0)
                         {
-                            string sqlQuery2 = "Delete From SalaryInfos Where employee_id = " + employee.id;
-                            int rowsAffected2 = db2.Execute(sqlQuery2);
-                        }
+                            deletable = true;
 
+                            using (db1)
+                            {
+                                string sqlQuery2 = "Delete From Employees Where id = " + id;
+                                int rowsAffected2 = db1.Execute(sqlQuery2);
+
+                                using (db1)
+                                {
+                                    string sqlQuery3 = "Delete From SalaryInfos Where employee_id = " + id;
+                                    int rowsAffected3 = db1.Execute(sqlQuery3);
+                                }
+
+                            }
+                        }
 
                     }
 
@@ -407,11 +427,16 @@ namespace NewProject.Controllers
 
                 }
 
+                if (!deletable)
+                {
+                    return Content("Engaged");
+                }
+
             }
             catch (Exception e)
             {
                 //var aaa = e;
-                return false;
+                return Content("False");
             }
 
             try
@@ -431,10 +456,10 @@ namespace NewProject.Controllers
             catch(Exception e)
             {
                 //var abc = e;
-                return true;
+                return Content("True");
             }
-            
-            return true;
+
+            return Content("True");
         }
 
         // GET: Employees/Create

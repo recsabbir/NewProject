@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using NewProject.Models;
 using Dapper;
+using Newtonsoft.Json.Linq;
 
 namespace NewProject.Controllers
 {
@@ -71,10 +72,11 @@ namespace NewProject.Controllers
             int avl = (from item in itemList where item.employee_id == null select item).Count();
             int asn = (from item in itemList where item.employee_id != null select item).Count();
 
-            //string data = @"[
-            //                    'assigned' : " + asn + @",
-            //                    'available' : " + avl + @"
-            //                ]";
+            
+
+            //string str = "{ 'context_name': { 'lower_bound': 'value', 'upper_bound': 'value', 'values': [ 'value1', 'valueN' ] } }";
+            //string jsonStr = "{data : [available : "+ avl + ", assigned : "+ asn +"]}";
+            //JObject json = JObject.Parse(jsonStr);
 
             mymodel.available = avl;
             mymodel.assigned = asn;

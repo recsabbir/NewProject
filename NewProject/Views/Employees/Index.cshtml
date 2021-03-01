@@ -276,10 +276,16 @@
                     if (_data == "True" ) {
                         GetEmployeeList();
                         $("#DeleteModal").modal("hide");
-                        toastr.success('Successfully!!!', 'Employee Deleted', { timeOut: 2000 });
-                    } else {
+                        toastr.success('Successfully!!!', 'Employee Deleted', { timeOut: 2500 });
+                    } else if (_data == "Engaged") {
                         $("#DeleteModal").modal("hide");
-                        toastr.error('Employee could not be deleted.', 'OOPS', { timeOut: 2000 });
+                        toastr.error('Employee is Engaged.', 'Sorry', { timeOut: 2500 });
+                    } else if (_data == "SamePerson") {
+                        $("#DeleteModal").modal("hide");
+                        toastr.error('You Can not delete yourself.', 'Sorry', { timeOut: 2500 });
+                    }else {
+                        $("#DeleteModal").modal("hide");
+                        toastr.error('Employee could not be deleted.', 'OOPS', { timeOut: 2500 });
                     }
                     
                     

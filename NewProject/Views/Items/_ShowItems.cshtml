@@ -26,7 +26,10 @@
                     <tr>
                         <td>@i</td>
                         <td>@item.name</td>
-                        <td>@item.category.name</td>
+                        <td>@if (item.category != null)
+                            { <span>@item.category.name</span> }
+                            else { <span>Not Set</span> }
+                        </td>
                         <td>@item.unit_price</td>
                         <td>@if (! string.IsNullOrEmpty(item.employee_id.ToString())) { <span>Assigned</span> } else { <span>Not Assigned</span> }</td>
                         <td><span class="table-data-feature"> <button class="item" title="Edit" onclick="GetItem('@item.id')" data-toggle="modal" data-target="#itemEditModal"><i class="zmdi zmdi-edit"></i></button> <button class="item" title="Delete" onclick="SelectItemID('@item.id')" data-toggle="modal" data-target="#DeleteItemModal"> <i class="zmdi zmdi-delete"></i> </button></span></td>

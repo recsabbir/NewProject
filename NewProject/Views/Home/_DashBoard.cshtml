@@ -18,9 +18,9 @@
 </div>
 <div class="col-md-6">
     <!--Item Drop Down-->
-    <div class="chart-percent-3 m-b-25">
-        <h3 class="title-3 m-b-25"> </h3>
-        <div class="chart-note m-t-50 m-b-5">
+    <div class="item-dropdown-div m-b-25">
+        <div class="item-dropdown-wrap">
+        <div class="">
             <span class="dot dot--blue"></span>
             <span>Availabe</span>
         </div>
@@ -29,16 +29,23 @@
                 <option value="" selected disabled>Available</option>
             </select>
         </div>
-        <div class="chart-note">
+        </div>
+    </div>
+    <div class="item-dropdown-div m-b-25">
+        <div class="item-dropdown-wrap">
+        <div class="">
             <span class="dot dot--red"></span>
             <span>Assigned</span>
         </div>
         <div class="m-b-50">
-            <select class="form-control displayDropdown m-b-100" id="assignedItem">
+            <select class="form-control displayDropdown m-b-50" id="assignedItem">
                 <option value="" selected disabled>Assigned</option>
             </select>
         </div>
-        <div>
+        </div>
+    </div>
+    <div class="employee-count-div">
+        <div class="employee-count-wrap">
             <span>Total Employee :</span> <span id="total-employee"></span>
         </div>
     </div>
@@ -63,7 +70,7 @@
             contentType: 'application/json;charset=utf-8',
             dataType: 'json',
             success: function (_data) {
-
+                console.log(_data);
                 if (ctx) {
                     ctx.height = 209;
                     var myChart = new Chart(ctx, {
@@ -179,8 +186,8 @@
             contentType: 'application/json;charset=utf-8',
             dataType: 'json',
             success: function (_data) {
-                console.log(_data);
-                console.log(_data[0].Value);
+                //console.log(_data);
+                //console.log(_data[0].Value);
                 $("#total-employee").html(_data[0].Value);
 
             },

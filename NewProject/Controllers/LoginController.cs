@@ -34,6 +34,7 @@ namespace NewProject.Controllers
         {
             var _username = data.Split(':')[0];
             var _password = data.Split(':')[1];
+            var _rememberMe = data.Split(':')[2];
             User u = new User();
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
             {
@@ -54,8 +55,20 @@ namespace NewProject.Controllers
             {
                 if(u.password == _password)
                 {
+                    
+                    
+                    if(_rememberMe == "true")
+                    {
+                        HttpCookie userInfo = new HttpCookie("userInfo");
+                        userInfo["username"] = u.username;
+                        userInfo["password"] = u.password;
+                        userInfo.Expires.AddDays(7d);
+                        Response.Cookies.Add(userInfo);
+                    }
+
                     u.password = null;
                     this.Session["User"] = u;
+
                     return "LoggedIn";
                 }
                 else

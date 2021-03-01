@@ -199,11 +199,38 @@ namespace NewProject.Controllers
             
             try
             {
-                 using (IDbConnection db1 = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
-                 {
-                        string sqlQuery1 = "Delete From ItemCategories Where id = " + id;
-                        int rowsAffected1 = db1.Execute(sqlQuery1);
-                 }
+                bool deletable = false;
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    using (IDbConnection db1 = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
+                    {
+                        string sqlQuery1 = "SELECT name FROM ITEMS WHERE category_id="+ id;
+                        int numOfOccurace = db1.Query<Item>(sqlQuery1).ToList().Count;
+
+                        if(numOfOccurace == 0)
+                        {
+                            deletable = true;
+
+                            using (IDbConnection db2 = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
+                            {
+                                string sqlQuery2 = "Delete From ItemCategories Where id = " + id;
+                                int rowsAffected2 = db2.Execute(sqlQuery2);
+                            }
+                        }
+                        
+                    }
+
+                    if (!deletable)
+                    {
+                        return Content("Engaged");
+                    }
+
+                    
+                    scope.Complete();
+                }
+
+
+                
 
             }
             catch (Exception e)
@@ -232,7 +259,7 @@ namespace NewProject.Controllers
             //}
 
 
-            string sql = "SELECT * FROM Items AS A INNER JOIN ItemCategories AS B ON A.category_id = B.id;";
+            string sql = "SELECT * FROM Items AS A LEFT JOIN ItemCategories AS B ON A.category_id = B.id;";
 
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
             {
@@ -268,7 +295,7 @@ namespace NewProject.Controllers
             //}
 
 
-            string sql = "SELECT * FROM Items AS A INNER JOIN ItemCategories AS B ON A.category_id = B.id WHERE A.id="+id+";";
+            string sql = "SELECT * FROM Items AS A LEFT JOIN ItemCategories AS B ON A.category_id = B.id WHERE A.id="+id+";";
 
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
             {
@@ -380,7 +407,7 @@ namespace NewProject.Controllers
 
         }
 
-        //POST: Items/DeleteItemCategory/5
+        //POST: Items/DeleteItem/5
         [HttpPost]
         public ActionResult DeleteItem(int id)
         {
@@ -406,22 +433,34 @@ namespace NewProject.Controllers
 
             try
             {
+                bool deletable = false;
+
                 using(TransactionScope scope = new TransactionScope())
                 {
                     using (IDbConnection db1 = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
                     {
-                        string sqlQuery1 = "Delete From Items Where id = " + id;
-                        int rowsAffected1 = db1.Execute(sqlQuery1);
+                        string sqlQuery1 = "SELECT id From ItemDistributions Where item_id = " + id;
+                        int numberOfOccurance = db1.Query<ItemDistribution>(sqlQuery1).ToList().Count;
 
-                        using (IDbConnection db2 = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
+                        if(numberOfOccurance == 0)
                         {
-                            string sqlQuery2 = "Delete From ItemDistributions Where item_id=" + id;
-                            int rowsAffected2 = db1.Execute(sqlQuery1);
+                            deletable = true;
+
+                            using (IDbConnection db2 = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
+                            {
+                                string sqlQuery2 = "Delete From Items Where id = " + id;
+                                int rowsAffected2 = db2.Execute(sqlQuery2);
+                            }
                         }
                     }
-
                     scope.Complete();
                 }
+
+                if (!deletable)
+                {
+                    return Content("Engaged");
+                }
+
 
                 
 
@@ -492,7 +531,7 @@ namespace NewProject.Controllers
             //}
 
 
-            string sql = "SELECT * FROM ItemDistributions AS A INNER JOIN Items AS B ON A.item_id = B.id INNER JOIN Employees AS C ON A.employee_id = C.id";
+            string sql = "SELECT * FROM ItemDistributions AS A INNER JOIN Items AS B ON A.item_id = B.id LEFT JOIN Employees AS C ON A.employee_id = C.id";
 
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["NPDB"].ConnectionString))
             {

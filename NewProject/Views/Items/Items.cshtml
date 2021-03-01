@@ -186,10 +186,14 @@
                     if (_data == "True") {
                         GetItemList();
                         $("#DeleteItemModal").modal("hide");
-                        toastr.success('Successfully!!!', 'Item Deleted', { timeOut: 2000 });
-                    } else {
+                        toastr.success('Successfully!!!', 'Item Deleted', { timeOut: 2500 });
+                    } else if (_data = "Engaged") {
                         $("#DeleteItemModal").modal("hide");
-                        toastr.error('Item could not be deleted.', 'OOPS', { timeOut: 2000 });
+                        toastr.error('Item is Engaged.', 'Sorry', { timeOut: 2500 });
+                    }
+                    else {
+                        $("#DeleteItemModal").modal("hide");
+                        toastr.error('Item could not be deleted.', 'OOPS', { timeOut: 2500 });
                     }
 
 
